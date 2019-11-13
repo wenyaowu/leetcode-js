@@ -27,5 +27,16 @@ Explanation: There are three ways to climb to the top.
  * @return {number}
  */
 var climbStairs = function(n) {
-    
+    if(n<=1) {
+        return 1;
+    }
+    let a = 1; //dp[0]
+    let b = 1; //dp[1]
+
+    for(let i = 0; i < n-1; i++) {
+        let c = a+b;
+        a = b;
+        b = c;
+    } 
+    return b;
 };
