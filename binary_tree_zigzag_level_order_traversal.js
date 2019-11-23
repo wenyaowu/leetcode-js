@@ -32,10 +32,14 @@ return its zigzag level order traversal as:
  * @return {number[][]}
  */
 var zigzagLevelOrder = function(root) {
+
   let left = true; // direction
   let currentStack = [root];
   let tempStack = [];
   const res = [];
+  if(!root) {
+      return res;
+  }
   let level = [];
 
   while (currentStack.length) {
@@ -53,6 +57,7 @@ var zigzagLevelOrder = function(root) {
       res.push(level);
       level = [];
       currentStack = tempStack;
+      tempStack = [];
       left = !left;
     }
   }
