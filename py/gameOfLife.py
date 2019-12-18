@@ -33,6 +33,7 @@ In this question, we represent the board using a 2D array. In principle, the boa
 
 
 class Solution:
+
     def gameOfLife(self, board: List[List[int]]) -> None:
         """
         Do not return anything, modify board in-place instead.
