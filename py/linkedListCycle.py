@@ -35,27 +35,14 @@ Explanation: There is no cycle in the linked list.
 #         self.next = None
 
 class Solution:
-    def detectCycle(self, head: ListNode) -> ListNode:
-        # Solution1: Hashmap
-
-        # Solution2: 
-        """
-            a + b + n + b = 2a + 2b
-            n = a
-        """
-        if not head or not head.next:
-            return None
-        fast = head.next.next
-        slow = head.next
-        while fast and fast.next:
-            if slow == fast:
-                slow2 = head
-                while slow and slow2:
-                    if slow == slow2:
-                        return slow
-                    slow = slow.next
-                    slow2 = slow2.next
-            fast = fast.next.next
-            slow = slow.next
-        return None
-
+    def hasCycle(self, head: ListNode) -> bool:
+        if not head:
+            return False
+        f = head
+        s = head
+        while f and f.next:
+            if f.next.next == s.next and s.next != None:
+                return s
+            f = f.next.next
+            s = s.next
+        return False
