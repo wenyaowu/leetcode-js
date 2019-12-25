@@ -11,18 +11,3 @@ Explanation: There are 4 prime numbers less than 10, they are 2, 3, 5, 7.
 """
 class Solution:
     def countPrimes(self, n: int) -> int:
-        if(n < 2):
-            return 0
-        count = 0
-        isPrime = [True for i in range(n)]  
-        for i in range(2, n):
-            if(isPrime[i]):
-                count += 1
-                multipliers = 2
-                current_number = i * multipliers
-                # Change all the multiples
-                while current_number < n:
-                    isPrime[current_number] = False
-                    multipliers += 1
-                    current_number = i * multipliers                
-        return count

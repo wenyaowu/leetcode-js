@@ -24,27 +24,40 @@ rotate 2 steps to the right: [3,99,-1,-100]
 [3,4,0,1,2]
 
 f(x) = (prev + k) % n 
+[0, 1, 2, 3, 4, 5]
+[4, 5, 0, 1, 2, 3]
+
+0 -> 2 -> 4 -> 0
 """
+
 
 class Solution:
     def rotate(self, nums: List[int], k: int) -> None:
         """
         Do not return anything, modify nums in-place instead.
         """
-        n = len(nums)
-        count = 0 # How many elements have been moved
-        for i in range(n): # i dictate starting point
-            currenValue = nums[i]
-            start = i
-            prevIndex = i 
-            while True:
-                nextIndex = (prevIndex + k) % n
-                tempValue = nums[nextIndex]
-                nums[nextIndex] = currenValue
-                currenValue = tempValue
-                prevIndex = nextIndex
-                count += 1
-                if prevIndex == start:
-                    break
-            if count == n:
-                break
+        count = 0
+        start = 0
+        currentIndex = 0
+        currentNumber = nums[0]
+
+        while True:
+
+            nextIndex = (currentIndex+k) % len(nums)
+            # Move number and save the number into curr number
+            temp = nums[nextIndex]
+            nums[nextIndex] = currentNumber
+            currentNumber = temp
+            currentIndex = nextIndex
+            # Update count for moved number
+            count += 1
+            if count == len(nums):
+                return
+
+            if currentIndex == start:
+                start += 1
+                currentIndex = start
+                currentNumber = nums[start]
+                
+
+            

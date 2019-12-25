@@ -29,19 +29,22 @@ class Solution:
     def numIslands(self, grid: List[List[str]]) -> int:
         if not grid or not grid[0]:
             return 0
+        m, n = len(grid), len(grid[0])
         count = 0
-        for i in range(len(grid)):
-            for j in range(len(grid[i])):
-                if(grid[i][j] == '1'):
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == '1':
                     count += 1
-                    self.flood(i, j, len(grid), len(grid[i]), grid)
+                    self.flood(i, j, grid)
         return count
 
-    def flood(self, x, y, m, n, grid):
-        if x < 0 or y < 0 or x >= m or y >= n or grid[x][y] != '1':
+    def flood(self, x, y, grid):
+        # Replace 1 with '*'
+        m, n = len(grid), len(grid[0])
+        if x < 0 or y < 0 or x >= m or y >= n or grid[x][y] == '*' or grid[x][y] == '0':
             return
-        grid[x][y]='*'
-        self.flood(x+1, y, m, n, grid)
-        self.flood(x-1, y, m, n, grid)
-        self.flood(x, y+1, m, n, grid)
-        self.flood(x, y-1, m, n, grid)
+        grid[x][y] = '*'
+        self.flood(x+1, y, grid)
+        self.flood(x-1, y, grid)
+        self.flood(x, y+1, grid)
+        self.flood(x, y-1, grid)
