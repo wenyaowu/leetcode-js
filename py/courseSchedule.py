@@ -18,29 +18,30 @@ Output: false
 Explanation: There are a total of 2 courses to take. 
              To take course 1 you should have finished course 0, and to take course 0 you should
              also have finished course 1. So it is impossible.
-Note:
-
-The input prerequisites is a graph represented by a list of edges, not adjacency matrices. Read more about how a graph is represented.
-You may assume that there are no duplicate edges in the input prerequisites.
 """
-
 
 class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
-        graph = self.buildGraph(numCourses, prerequisites)
-        state = [0 for x in range(numCourses)]
+        visited = [False for i in range(numCourses)]
+        lookup = self.createLookup(prerequisites, numCourses)
+        for i in range(numCourses):
+            if self.isCycled(lookup, visited, numCourses, i):
+                return False
+        return True
+        
+    def isCycled(self, lookup, visited, numCourses, course):
+        if visited[course]:
+            return True
+        visited[course] = True
+        for c in lookup[course]:
+            if self.isCycled(lookup, visited, numCourses, c):
+                return True
+        visited[course] = False
+        return False
 
-
-    def buildGraph(self, n: int, edges) -> dict:
-        graph = [[] for i in range(n)]
-        for i in edges:
-            graph[i[0]].append(i[1])
-        return graph
-
-    def isCycle(self, n, visit, graph):
-       visit[n] = 1
-       for i in graph[n]:
-           if visit[i] == 1 or self.isCycle(i, visit, graph):
-               return True
-        visit[n] = 0 # !! Reset 
-        return False 
+    def createLookup(self, prerequisites, numCourses):
+        lookup = [[] for i in range(numCourses)]
+        for p in prerequisites:
+            lookup[p[0]].append(p[1])
+        return lookup
+    
