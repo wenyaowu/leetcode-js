@@ -38,22 +38,18 @@ p and q are different and both values will exist in the binary tree
  * @return {TreeNode}
  */
 var lowestCommonAncestor = function(root, p, q) {
-    
     if(!root) {
-        return null
+        return null;
     }
-
     if(root === p || root === q) {
-        console.log('return')
-        return root
+        return root;
     }
+    const left = lowestCommonAncestor(root.left, p, q);
+    const right = lowestCommonAncestor(root.right, p, q);
 
-    const left = lowestCommonAncestor(root.left, p, q)
-    console.log(root.val, left);
-    const right = lowestCommonAncestor(root.right, p, q)
     if (left && right) {
         return root;
     }
 
-    return left ? left : right
+    return left ? left : right;
 };

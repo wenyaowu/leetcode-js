@@ -20,16 +20,13 @@ Explanation: 13 = 4 + 9.
 var numSquares = function(n) {
   const dp = new Array(n + 1).fill(Number.MAX_SAFE_INTEGER);
   dp[0] = 0;
+
   for (let i = 0; i <= n; i++) {
-    // use dp[i] as base, calculate dp[i+j^2]
-    /*
-              dp[0] + 1^2 -> dp[1], dp[0] + 2^2 -> dp[4], ... 
-          */
     let j = 1;
     while (i + j * j <= n) {
       dp[i + j * j] = Math.min(dp[i + j * j], dp[i] + 1);
       j += 1;
     }
   }
-  return dp[dp.length - 1];
+  return dp[n];
 };
