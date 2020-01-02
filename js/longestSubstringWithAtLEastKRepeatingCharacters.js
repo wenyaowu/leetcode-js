@@ -31,27 +31,21 @@ var longestSubstring = function(s, k) {
   if (s.length < k) {
     return 0;
   }
-  const count = {};
-  let maxLength = 0;
+  const counts = {};
   for (let char of s) {
-    if (!count[char]) {
-      count[char] = 1;
+    if (!counts[char]) {
+      counts[char] = 1;
     } else {
-      count[char] += 1;
+      counts[char] += 1;
     }
   }
 
-
-  // In this problem, we just need to split by the First character that has count less than k
-  // Because if there's other character less than k, it will split again in the next recursion until hit the base case
-
-  for (let char of Object.keys(count)) {
-    if (count[char] < k) {
-      let splittedWords = s.split(char); // split
-      // Return the longest among all words
-      for (let word of splittedWords) {
-        let length = longestSubstring(word, k);
-        maxLength = maxLength > length ? maxLength : length;
+  for (let key of Object.keys(counts)) {
+    if (counts[key] < k) {
+      let maxLength = 0;
+      for (let sub of s.split(key)) {
+        let length = longestSubstring(sub, k);
+        maxLength = length > maxLength ? length : maxLength;
       }
       return maxLength;
     }

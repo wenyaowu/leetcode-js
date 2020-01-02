@@ -20,35 +20,32 @@ Your algorithm's time complexity must be better than O(n log n), where n is the 
  * @return {number[]}
  */
 var topKFrequent = function(nums, k) {
-    /**
-     * Becasue we are not looking for kth element but top k elements
-     * we can use bucket sort to only group the nums instead of calculate the actual number which will give us
-     * O(n) time complexity
-     */
+  const n = nums.length;
+  const buckets = new Array(n + 1).fill(0).map(() => []); // 0~n
+  const counts = count(nums);
+  const res = [];
+  for (let key of Object.keys(counts)) {
+    buckets[counts[key]].push(key);
+  }
 
-    const bucket = new Array(nums.length).fill(0).map(()=>[]);
-    // index i -> appear i+1 time
-    const res = [];
-  
-    const count = {};
-    for (let num of nums) {
-      if (!count[num]) {
-        count[num] = 1;
-      } else {
-        count[num] += 1;
+  for (let i = buckets.length - 1; i >= 0 && res.length < k; i--) {
+    for (let num of buckets[i]) {
+      res.push(num);
+      if (res.length === k) {
+        return res;
       }
     }
-    for (let key of Object.keys(count)) {
-      bucket[count[key] - 1].push(key);
+  }
+};
+
+var count = function(nums) {
+  const counts = {};
+  for (let num of nums) {
+    if (!counts[num]) {
+      counts[num] = 1;
+    } else {
+      counts[num] += 1;
     }
-  
-    for (let i = bucket.length - 1; i >= 0; i--) {
-      for (let num of bucket[i]) {
-        res.push(num);
-        if (res.length === k) {
-          return res;
-        }
-      }
-    }
-  };
-  
+  }
+  return counts;
+};

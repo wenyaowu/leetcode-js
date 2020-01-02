@@ -22,23 +22,23 @@ var partition = function(s) {
   if (!s) {
     return [];
   }
-  res = [];
-  helper(s, 0, []);
+  let res = [];
+  helper(s, 0, [], res);
+  return res;
 
-  function helper(s, currentIndex, currentPatitions) {
-    if (currentIndex === s.length) {
-      res.push(currentPatitions);
+  function helper(s, idx, currentPartition, res) {
+    // idx is the start of the next partition point
+    if (idx >= s.length) {
+      res.push(currentPartition);
+      return;
     }
-
-    for (let i = 1; currentIndex + i <= s.length; i++) {
-      let currentSubstring = s.substring(currentIndex, currentIndex + i);
-      if (isPalindrome(currentSubstring)) {
-        
-        helper(s, currentIndex + i, [...currentPatitions, currentSubstring]);
+    for (let i = idx; i < s.length; i++) {
+      let currentSubstirng = s.substring(idx, i + 1);
+      if (isPalindrome(currentSubstirng)) {
+        helper(s, i + 1, [...currentPartition, currentSubstirng], res);
       }
     }
   }
-  return res;
 };
 
 const isPalindrome = function(s) {

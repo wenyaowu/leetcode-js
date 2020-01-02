@@ -31,12 +31,11 @@ var kthSmallest = function(matrix, k) {
   let n = matrix[0].length;
   let l = matrix[0][0];
   let h = matrix[m - 1][n - 1];
-
   while (l < h) {
     let mid = Math.floor((l + h) / 2);
-    let smallerOrEqualCount = countSmallerOrEqual(matrix, mid);
-    if (smallerOrEqualCount >= k) { // *****if equal, we need to include mid for next calculation
-      h = mid;
+    let smallerOrEquals = countSmallerOrEqualThan(mid, matrix); // Count smaller or equal
+    if (smallerOrEquals > k - 1) {
+      h = mid; // Inclue the current number, cuz it can be the answer
     } else {
       l = mid + 1;
     }
@@ -44,18 +43,17 @@ var kthSmallest = function(matrix, k) {
   return l;
 };
 
-var countSmallerOrEqual = function(matrix, mid) {
+function countSmallerOrEqualThan(mid, matrix) {
+  // Remember to count equal to since we are counting kth element, cant skip equal
   let count = 0;
-  for (let i = 0; i < matrix.length; i++) {
-    j = 0;
-    while (j < matrix[0].length) {
-      if (matrix[i][j] <= mid) {
-        count += 1;
-        j += 1;
-      } else {
-        break;
-      }
+  let m = matrix.length;
+  let n = matrix[0].length;
+  for (let i = 0; i < m; i++) {
+    let j = 0;
+    while (matrix[i][j] <= mid && j < n) {
+      count += 1;
+      j += 1;
     }
   }
   return count;
-};
+}

@@ -18,24 +18,21 @@ NOTE: input types have been changed on April 15, 2019. Please reset to default c
  * @return {number}
  */
 var minMeetingRooms = function(intervals) {
+  const starts = intervals.map(i => i[0]).sort((a, b) => a - b);
+  const ends = intervals.map(i => i[1]).sort((a, b) => a - b);
   let rooms = 0;
-  let availableRoom = 0;
+  let available = 0;
   let endPointer = 0;
 
-  const start = intervals.map(i => i[0]).sort((a, b) => a - b);
-  const end = intervals.map(i => i[1]).sort((a, b) => a - b);
-
-  for (let i = 0; i < start.length; i++) {
-    while (end[endPointer] <= start[i]) { // This step is to release room, if start == end, we release room first
-      availableRoom += 1;
+  for (let i = 0; i < starts.length; i++) {
+    while (ends[endPointer] <= starts[i]) {
+      available += 1;
       endPointer += 1;
     }
-    if (start[i] < end[endPointer]) {
-      if (availableRoom === 0) {
-        rooms += 1;
-      } else {
-        availableRoom -= 1;
-      }
+    if (available === 0) {
+      rooms += 1;
+    } else {
+      available -= 1;
     }
   }
 
