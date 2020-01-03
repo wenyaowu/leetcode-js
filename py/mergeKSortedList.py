@@ -25,7 +25,7 @@ class Solution:
         h = []
         for idx, l in enumerate(lists):
             if l:
-                heapq.heappush([], (l.val, idx, l))
+                heapq.heappush(h, (l.val, idx, l))
         head = dummy = ListNode(0)
         while len(h) > 0:
             t = heapq.heappop(h)
