@@ -33,35 +33,31 @@ Search right:
 """
 # https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/discuss/14699/Clean-iterative-solution-with-two-binary-searches-(with-explanation)
 
+
 class Solution:
     def searchRange(self, nums: List[int], target: int) -> List[int]:
-
+        if not nums or not len(nums):
+            return [-1, -1]
         res = [-1, -1]
-        if len(nums) == 0:
-            return res
-        l = 0
-        r = len(nums)-1
-        while l<r:
-            mid = int((l+r)/2)
-            if target > nums[mid]:
-                l = mid + 1
+        # Find left
+        lo = 0
+        hi = len(nums)-1
+        while lo < hi:
+            mid = (lo+hi)//2
+            if nums[mid] >= target:
+                hi = mid
             else:
-                r = mid
-        if nums[l]!=target:
+                lo = mid+1
+        if nums[lo] != target:
             return res
-        res[0] = l
-
-        r = len(nums)-1 # l is the leftest, we don't need to reset
-
-        while l<r:
-            mid = int((l+r)/2) + 1 
-            # bias towards right so we don't stuck
-            # ex: when the last 2 elements are: [3,3], 
-            # (1) (l+r)/2 => l
-            # (2) when nums[mid] == target: l = mid -> (1) (Infinite loop)
-            if target < nums[mid]:
-                r = mid -1
+        res[0] = lo
+        # We don't need to reset lo becasue it's the leftest element
+        hi = len(nums)-1
+        while lo < hi:
+            mid = (lo+hi+1)//2  # Pick towards right
+            if nums[mid] <= target:
+                lo = mid  # Keep mid on left
             else:
-                l = mid
-        res[1] = l
+                hi = mid - 1
+        res[1] = lo
         return res
