@@ -20,19 +20,25 @@ Output:
 ]
  */
 
- /**
+/**
  * @param {number[]} nums
  * @return {number[][]}
  */
 var subsets = function(nums) {
-    let res = [[]];
-    for(let num of nums) {
-        let curr = [];
-        for(let r of res) {
-            curr.push([...r, num]);
-        }
-        res = [...res, ...curr];
-    }
-    return res;
+  if (!nums) {
+    return [];
+  }
+  const list = new Array();
+  backtracking(nums, [], list, 0);
+  return list;
 };
 
+var backtracking = function(nums, temp, list, start) {
+
+  list.push(temp);
+  for (let i = start; i < nums.length; i++) {
+    backtracking(nums, [...temp, nums[i]], list, i + 1);
+  }
+};
+
+console.log(subsets([1, 2, 3]));

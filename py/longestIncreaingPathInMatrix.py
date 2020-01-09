@@ -24,6 +24,8 @@ Input: nums =
 Output: 4 
 Explanation: The longest increasing path is [3, 4, 5, 6]. Moving diagonally is not allowed.
 """
+
+
 class Solution:
     def longestIncreasingPath(self, matrix: List[List[int]]) -> int:
         maxLength = 0
@@ -35,17 +37,17 @@ class Solution:
             for j in range(n):
                 maxLength = max(self.dfs(matrix, i, j), maxLength)
         return maxLength
+
     def dfs(self, matrix, x, y):
         if self.cache[x][y] != -1:
             return self.cache[x][y]
         dx = [-1, 0, 1, 0]
         dy = [0, 1, 0, -1]
         currentLength = 1
-        for i in dx:
-            for j in dy:
-                xi = x+i
-                yi = y+j
-                if xi<0 or yi<0 or xi>=len(matrix) or yi>=len(matrix[0]) or matrix[x][y]>=matrix[xi][yi]:
+        for i in range(4):
+                xi = x+dx[i]
+                yi = y+dy[i]
+                if xi < 0 or yi < 0 or xi >= len(matrix) or yi >= len(matrix[0]) or matrix[x][y] >= matrix[xi][yi]:
                     continue
                 currentLength = max(1+self.dfs(matrix, xi, yi), currentLength)
         self.cache[x][y] = currentLength

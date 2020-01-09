@@ -21,6 +21,23 @@ Output:
 
 
 class Solution:
+
+    # Backtracking
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        if not nums:
+            return []
+        l = []
+        tempList = []
+        self.backtracking(tempList, l, nums, 0)
+        return l
+
+    def backtracking(self, tempList, l, nums, start):
+        l.append(tempList)
+        for i in range(start, len(nums)):
+            tempList.append(nums[i])
+            self.backtracking(tempList, l, nums, i+1)
+            tempList.pop()
+        
     def subsets(self, nums: List[int]) -> List[List[int]]:
         res = [[]]
         if not nums:
@@ -34,3 +51,4 @@ class Solution:
                 temp.append(r + [n])
             res = temp
         return res
+
