@@ -30,5 +30,21 @@ Constraints:
  * @return {number}
  */
 var minKnightMoves = function(x, y) {
-    
-};
+    const lookup = {};
+    lookup["0#0"] = 0;
+    lookup["1#0"] = 3;
+    lookup["0#1"] = 3;
+    return dp(Math.abs(x), Math.abs(y));
+  
+    function dp(x, y) {
+      const key = `${x}#${y}`;
+      if (lookup[key] !== undefined) {
+          console.log(key, lookup[key])
+        return lookup[key];
+      }
+      let moves = Math.min(dp(Math.abs(x - 1), Math.abs(y - 2)), dp(Math.abs(x - 2), Math.abs(y - 1))) + 1;
+      lookup[key] = moves;
+      return moves;
+    }
+  };
+  

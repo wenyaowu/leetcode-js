@@ -31,32 +31,33 @@ var minWindow = function(S, T) {
   let minSubstringStart = -1;
   let ps = 0;
   let pt = 0;
+
   while (ps < S.length) {
-    // Check feasibility
     if (S[ps] === T[pt]) {
       ps += 1;
       pt += 1;
+    } else {
+      ps += 1;
+    }
 
-      if (pt === T.length) {
-        // Optimization
-        let end = ps;
-        pt -= 1;
-        ps -= 1;
-        while (pt >= 0) {
-          if (S[ps] === T[pt]) {
-            pt -= 1;
-          }
+    if (pt === T.length) {
+      ps -= 1;
+      pt -= 1;
+      let substringEnd = ps;
+      while (pt >= 0) {
+        if (S[ps] == T[pt]) {
+          ps -= 1;
+          pt -= 1;
+        } else {
           ps -= 1;
         }
-        pt += 1;
-        ps += 1;
-        if (end - ps < minSubstringLen) {
-          minSubstringLen = end - ps;
-          minSubstringStart = ps;
-        }
-        ps += 1; // We need to restart at ps+1 or it's going to infinite loop checking the same string over and over again
       }
-    } else {
+      ps += 1;
+      pt += 1;
+      if (substringEnd - ps + 1 < minSubstringLen) {
+        minSubstringStart = ps;
+        minSubstringLen = substringEnd - ps + 1;
+      }
       ps += 1;
     }
   }
