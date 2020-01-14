@@ -37,23 +37,23 @@ to_delete contains distinct values between 1 and 1000.
  */
 var delNodes = function(root, to_delete) {
   const lookup = {};
-  for (let i of to_delete) {
-    lookup[i] = true;
-  }
   const res = [];
-  helper(root, true, res, lookup);
+  for (let val of to_delete) {
+    lookup[val] = true;
+  }
+  helper(root, true);
   return res;
-};
 
-var helper = function(node, isRoot, res, lookup) {
-  if (!node) {
-    return null;
+  function helper(node, isRoot) {
+    if (!node) {
+      return null;
+    }
+    const isDeleted = lookup[node.val];
+    if (isRoot && !isDeleted) { // <-------- Don't push the node that's deleted
+      res.push(node);
+    }
+    node.left = helper(node.left, isDeleted);
+    node.right = helper(node.right, isDeleted);
+    return isDeleted ? null : node; // <------------ Pay attention to the return value
   }
-  let deleted = lookup[node.val];
-  if (!deleted && isRoot) {
-    res.push(node);
-  }
-  node.left = helper(node.left, deleted, res, lookup);
-  node.right = helper(node.right, deleted, res, lookup);
-  return deleted ? null : node;
 };

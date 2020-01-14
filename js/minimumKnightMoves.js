@@ -30,5 +30,23 @@ Constraints:
  * @return {number}
  */
 var minKnightMoves = function(x, y) {
-    
+  const dp = {};
+
+  // Initialize
+  dp["0-0"] = 0;
+  dp["2-0"] = 2;
+  dp["0-2"] = 2;
+
+  return helper(Math.abs(x), Math.abs(y));
+
+  function helper(x, y) {
+    if (dp[`${x}-${y}`]) {
+      return dp[`${x}-${y}`];
+    }
+    const minSteps =
+      Math.min(helper(x-1, y-2), helper(x-2, y-1)) + 1;
+      dp[`${x}-${y}`] = minSwaps;
+    return minSteps
+  }
 };
+
