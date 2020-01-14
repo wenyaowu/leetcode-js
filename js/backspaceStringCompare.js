@@ -40,7 +40,7 @@ var backspaceCompare = function(S, T) {
 
   // Solution (2): Scan from the back
   let s = S.length - 1;
-  let t = S.length - 1;
+  let t = T.length - 1;
   let sBack = 0;
   let tBack = 0;
   while (true) {
