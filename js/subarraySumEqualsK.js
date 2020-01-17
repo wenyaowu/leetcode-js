@@ -9,11 +9,26 @@ The length of the array is in range [1, 20,000].
 The range of numbers in the array is [-1000, 1000] and the range of the integer k is [-1e7, 1e7].
  */
 
- /**
+/**
  * @param {number[]} nums
  * @param {number} k
  * @return {number}
  */
 var subarraySum = function(nums, k) {
-    
+  const lookup = {};
+  lookup[0] = 1;
+  let sum = 0;
+  let res = 0;
+  for (let num of nums) {
+    sum += num;
+    if (lookup[sum - k] !== undefined) {
+      res += lookup[sum - k];
+    }
+    if (lookup[sum] === undefined) {
+      lookup[sum] = 1;
+    } else {
+      lookup[sum] += 1;
+    }
+  }
+  return res;
 };
