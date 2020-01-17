@@ -36,36 +36,31 @@ Explanation: The endWord "cog" is not in wordList, therefore no possible transfo
 """
 class Solution:
     def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
-        if not beginWord or not endWord or len(wordList) == 0:
-            return 0
         if endWord not in wordList:
             return 0
-        nextHop = [beginWord]
+        next = [beginWord]
+        tempWordlist = []
+        tempNext = []
         steps = 1
-        tempNextWordList = []
-        tempNextHop = []
-        
-        while len(nextHop) > 0:
-            for word in nextHop:
-                if word == endWord:
-                    return steps
-                # Find possible words for next step
-                for w in wordList:
-                    if self.validTransformation(word, w):
-                        tempNextHop.append(w)
+        while len(next) > 0:
+            steps+=1
+            for w1 in next:
+                for w2 in wordList:
+                    if self.check(w1, w2):
+                        if w2 == endWord:
+                            return steps
+                        tempNext.append(w2)
                     else:
-                        tempNextWordList.append(w)
-                wordList = tempNextWordList # Avoid Duplicate nextword
-                tempNextWordList = []
-            nextHop = tempNextHop 
-            tempNextHop = []
-            steps += 1
-        return 0   
+                        tempWordlist.append(w2)
+                wordList = tempWordlist
+                tempWordlist = []
+            next = tempNext 
+            tempNext = []
+        return 0
 
-        
-    
-    def validTransformation(self, s1, s2):
+
+    def check(self, s1, s2):
         for i in range(len(s1)):
-            if s1[0:i] == s2[0:i] and s1[i+1::] == s2[i+1::]:
+            if (s1[0:i]+s1[i+1::]) == (s2[0:i]+s2[i+1::]):
                 return True
         return False
