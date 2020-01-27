@@ -33,7 +33,9 @@ Explanation: The longest increasing path is [3, 4, 5, 6]. Moving diagonally is n
 var longestIncreasingPath = function(matrix) {
   /**
    * DFS
-   * Key: At some point, we are going to encounter a node that can not proceed any direction
+   * Key:
+   * (1) Since we are looing for strictly increase path, using matrix[x][y] <= matrix[xi][yi] can avoid loop so we dont need visited array 
+   * (2) At some point, we are going to encounter a node that can not proceed any direction
    * Max will be record, the the recursion will start returning at that point
    */
   if (!matrix || !matrix[0]) return 0;

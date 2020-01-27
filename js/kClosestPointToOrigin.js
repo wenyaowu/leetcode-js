@@ -32,9 +32,49 @@ Note:
  * @return {number[][]}
  */
 var kClosest = function(points, K) {
-
+  let l = 0;
+  let r = points.length - 1;
+  while (l <= r) {
+    mid = sort(points, l, r); // (Mid + 1) represents how many elements are k-smallest
+    if (mid + 1 === K) {
+      break;
+    } else if (mid + 1 > K) {
+      r = mid - 1; // Left side is too long, we want make it shorter. the length of left side after mid-1 is (mid-1)+1
+    } else {
+      l = mid + 1;
+    }
+  }
+  return points.slice(0, K);
 };
 
+function sort(points, l, r) {
+  const pivot = points[l];
+  const pivotDistance = distance(pivot);
+  let i = l;
+  while (i <= r) {
+    if (distance(points[i]) < pivotDistance) {
+      swap(points, i, l);
+      l += 1;
+      i += 1;
+    } else if (distance(points[i]) > pivotDistance) {
+      swap(points, i, r);
+      r -= 1;
+    } else {
+      i++;
+    }
+  }
+  //      smaller   eql   bigger (l and r should fall on equal)
+  // |------------|-----|-------------|
+  //              l     r
+  return r; // 0 -> r is sorted (r+1 elements are the left side are k-smallest)
+}
+
+function swap(array, i, j) {
+  const temp = array[i];
+  array[i] = array[j];
+  array[j] = temp;
+}
+
 function distance(point) {
-    
+  return Math.sqrt(point[0] * point[0] + point[1] * point[1]);
 }

@@ -12,29 +12,34 @@ Input: [[7,10],[2,4]]
 Output: 1
 NOTE: input types have been changed on April 15, 2019. Please reset to default code definition to get new method signature.
  */
-
 /**
  * @param {number[][]} intervals
  * @return {number}
  */
 var minMeetingRooms = function(intervals) {
-  const starts = intervals.map(i => i[0]).sort((a, b) => a - b);
-  const ends = intervals.map(i => i[1]).sort((a, b) => a - b);
-  let rooms = 0;
-  let available = 0;
-  let endPointer = 0;
+  const n = intervals.length;
+  const starts = intervals.map(i => i[0]);
+  const ends = intervals.map(i => i[1]);
+  let totalRooms = 0;
+  let availableRooms = 0;
 
-  for (let i = 0; i < starts.length; i++) {
-    while (ends[endPointer] <= starts[i]) {
-      available += 1;
-      endPointer += 1;
-    }
-    if (available === 0) {
-      rooms += 1;
+  let ps = 0;
+  let pe = 0;
+
+  while (ps < n) {
+    if (starts[ps] < ends[pe]) {
+      if (availableRooms > 0) {
+        availableRooms -= 1;
+      } else {
+        totalRooms += 1;
+      }
+      ps += 1;
     } else {
-      available -= 1;
+      while (pe < n && ends[pe] <= starts[ps]) {
+        availableRooms += 1;
+        pe += 1;
+      }
     }
   }
-
-  return rooms;
+  return totalRooms;
 };

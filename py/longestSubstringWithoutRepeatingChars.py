@@ -1,45 +1,43 @@
 """
-Given a string, find the length of the longest substring without repeating characters.
+Find the length of the longest substring T of a given string (consists of lowercase letters only) such that every character in T appears no less than k times.
 
 Example 1:
 
-Input: "abcabcbb"
-Output: 3 
-Explanation: The answer is "abc", with the length of 3. 
+Input:
+s = "aaabb", k = 3
+
+Output:
+3
+
+The longest substring is "aaa", as 'a' is repeated 3 times.
 Example 2:
 
-Input: "bbbbb"
-Output: 1
-Explanation: The answer is "b", with the length of 1.
-Example 3:
+Input:
+s = "ababbc", k = 2
 
-Input: "pwwkew"
-Output: 3
-Explanation: The answer is "wke", with the length of 3. 
-             Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
+Output:
+5
+
+The longest substring is "ababb", as 'a' is repeated 2 times and 'b' is repeated 3 times.
 """
-
 class Solution:
-    def lengthOfLongestSubstring(self, s: str) -> int:
-        if not s:
-            return 0
-        visited = {}
-        head = 0
-        tail = 0
-        maxLength = 0
-        n = len(s)
+    def longestSubstring(self, s: str, k: int) -> int:
+        self.maxLength = 0
+        self.helper(s, k)
+        return self.maxLength
 
-        while tail < n:
-            if s[tail] not in visited or not visited[s[tail]]:
-                visited[s[tail]] = 1
+    def helper(self, s, k):
+        lookup = {}
+        for char in s:
+            if char not in lookup:
+                lookup[char] = 1
             else:
-                # visited, move head until head = tail
-                while head < tail:
-                    if s[head] == s[tail]:
-                        maxLength = max(tail - head, maxLength)
-                        head += 1
-                        break
-                    visited[s[head]] = 0
-                    head += 1
-            tail += 1
-        return max(maxLength, tail - head)
+                lookup[char] += 1
+        for key in lookup.keys():
+            if lookup[key] < k:
+                for substring in s.split(key):
+                    self.helper(substring, k)
+                return
+        self.maxLength = max(self.maxLength, len(s))
+
+        
