@@ -33,3 +33,29 @@ var lengthOfLIS = function(nums) {
   }
   return max;
 };
+
+// O(nlogn)
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var lengthOfLIS = function(nums) {
+    
+};
+
+function binarySearch(nums, target) {
+  let lo = 0;
+  let hi = nums.length-1;
+  while(lo < hi) {
+    let mid = Math.floor((lo+hi)/2);
+    if(nums[mid] <= target) {
+      lo = mid + 1;
+    }
+    else {
+      hi = mid;
+    }
+  }
+  return lo
+}
+
+console.log(binarySearch([1,3,5,7,9], 6))
