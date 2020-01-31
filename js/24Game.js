@@ -20,35 +20,39 @@ You cannot concatenate numbers together. For example, if the input is [1, 2, 1, 
 /**
  * Find all the possible combinations (since there are only 4 numbers so the combinations are limited)
  */
+/**
+ * @param {number[]} nums
+ * @return {boolean}
+ */
 var judgePoint24 = function(nums) {
-  if (nums.length === 1) {
-    return Math.abs(24 - nums[0]) < 0.0001; // Approx towards 24
-  }
-
-  for (let i = 0; i < nums.length; i++) {
-    for (let j = i + 1; j < nums.length; j++) {
-      let combinations = calculate(nums[i], nums[j]);
-      let arr = nums.filter((v, idx) => idx !== j && idx !== i);
-      for (let c of combinations) {
-        arr.push(c);
-        if (judgePoint24(arr)) {
-          return true;
+  return backtracking(nums);
+  
+  function backtracking(nums) {
+    if (nums.length === 1) {
+      return Math.abs(24 - nums[0]) < 0.0001;
+    }
+    for (let i = 0; i < nums.length; i++) {
+      for (let j = i + 1; j < nums.length; j++) {
+        let combos = combinations(nums[i], nums[j]);
+        let nextNumbers = nums.filter((_, idx) => idx !== i && idx !== j);
+        for (let c of combos) {
+          if (backtracking([...nextNumbers, c])) {
+            return true;
+          }
         }
-        arr.pop();
       }
     }
+    return false;
   }
-  return false;
 };
 
-var calculate = function(a, b) {
-  // Calculate all the possible combinations
-  let res = [a * b, a + b, a - b, b - a];
-  if (b > 0) {
-    res.push(a / b);
+function combinations(a, b) {
+  const combo = [a + b, a - b, b - a, a * b];
+  if (b !== 0) {
+    combo.push(a / b);
   }
-  if (a > 0) {
-    res.push(b / a);
+  if (a !== 0) {
+    combo.push(b / a);
   }
-  return res;
-};
+  return combo
+}
