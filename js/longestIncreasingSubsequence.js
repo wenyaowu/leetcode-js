@@ -40,7 +40,16 @@ var lengthOfLIS = function(nums) {
  * @return {number}
  */
 var lengthOfLIS = function(nums) {
-    
+    const lis = [];
+    for(let num of nums) {
+      if(lis.length === 0 || num > lis[lis.length-1]) {
+        lis.push(num);
+      } else {
+        const idx = binarySearch(lis, num)
+        lis[idx] = num;
+      }
+    }
+    return lis.length;
 };
 
 function binarySearch(nums, target) {
@@ -57,5 +66,3 @@ function binarySearch(nums, target) {
   }
   return lo
 }
-
-console.log(binarySearch([1,3,5,7,9], 6))

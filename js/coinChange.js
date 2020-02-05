@@ -20,21 +20,34 @@ You may assume that you have an infinite number of each kind of coin.
  * @param {number} amount
  * @return {number}
  */
+/**
+ * @param {number[]} coins
+ * @param {number} amount
+ * @return {number}
+ */
 var coinChange = function(coins, amount) {
-  if (!coins || amount === undefined) {
-    return -1;
-  }
-  if (amount === 0) {
-    return 0;
-  }
-  const dp = new Array(amount + 1).fill(Number.MAX_SAFE_INTEGER);
-  dp[0] = 0;
-  for (let i = 0; i <= amount; i++) {
-    for (coin of coins) {
-      if (i - coin >= 0 && dp[i - coin] !== Number.MAX_SAFE_INTEGER) {
-        dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+  const cache = new Array(amount + 1).fill(-2);
+  cache[0] = 0;
+  backtracking(amount, 0);
+  return cache[amount];
+
+  function backtracking(remain) {
+    if (cache[remain] !== -1) {
+      return cache[remain];
+    }
+    if (cache[remain] === -2) {
+      return -1;
+    }
+    let min = Number.MAX_SAFE_INTEGER;
+    for (let num of coins) {
+      if (remain - num >= 0) {
+        let x = backtracking(remain - num);
+        if (x !== -1) {
+          min = Math.min(min, x + 1);
+        }
       }
     }
+    cache[remain] = min === Number.MAX_SAFE_INTEGER ? -2 : min;
+    return cache[remain] === -2 ? -1 : cache[remain];
   }
-  return dp[amount] === Number.MAX_SAFE_INTEGER ? -1 : dp[amount];
 };
