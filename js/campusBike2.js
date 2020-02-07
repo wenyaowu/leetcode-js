@@ -38,26 +38,29 @@ All worker and bike locations are distinct.
  * @param {number[][]} bikes
  * @return {number}
  */
+
 var assignBikes = function(workers, bikes) {
-  const usedBike = new Array(bikes.length).fill(false);
-  let minDistance = Number.MAX_SAFE_INTEGER;
-  backtracking(0, 0);
-  return minDistance;
+  const assignedBikes = new Array(bikes.length).fill(false);
+  let minLength = Number.MAX_SAFE_INTEGER;
+  backtracking(0, assignedBikes, 0);
+  return minLength;
 
-  function backtracking(currentWorker, currentSum) {
+  function backtracking(currentWorker, assignedBikes, currentLength) {
     if (currentWorker === workers.length) {
-      minDistance = minDistance > currentSum ? currentSum : minDistance;
-      return
+      //Base case
+      minLength = Math.min(minLength, currentLength);
+      return;
     }
-
     for (let i = 0; i < bikes.length; i++) {
-      if (!usedBike[i]) {
-        usedBike[i] = true;
+      //Each options: bike
+      if (!assignedBikes[i]) {
+        assignedBikes[i] = true;
         backtracking(
           currentWorker + 1,
-          currentSum + distance(workers[currentWorker], bikes[i])
+          assignedBikes,
+          currentLength + distance(workers[currentWorker], bikes[i])
         );
-        usedBike[i] = false;
+        assignedBikes[i] = false;
       }
     }
   }

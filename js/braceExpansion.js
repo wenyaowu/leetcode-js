@@ -35,25 +35,24 @@ All characters inside a pair of consecutive opening and ending curly brackets ar
 var expand = function(S) {
   const res = [];
   backtracking(0, "");
-  return res;
+  return res.sort();
 
-  function backtracking(index, currentString) {
-    if (index >= S.length) {
-      res.push(currentString);
-      return;
+  function backtracking(idx, currentString) {
+    if(idx === S.length) {
+      res.push(currentString)
+      return
     }
-
-    if (S[index] === "{") {
-      let pointer = index + 1;
-      while (S[pointer] !== "}") {
-        pointer += 1;
+    if(S[idx] === "{") {
+      let start = idx+1;
+      while(S[idx] !== "}"){
+        idx +=1;
       }
-      let chars = S.substring(index + 1, pointer).split(",");
-      for (let c of chars) {
-        backtracking(pointer + 1, currentString + c);
+      const options = S.substring(start, idx).split(",")
+      for(char of options) {
+        backtracking(idx+1, currentString+char);
       }
     } else {
-      backtracking(index + 1, currentString + S[index]);
+      backtracking(idx+1, currentString+S[idx]);
     }
   }
 };
