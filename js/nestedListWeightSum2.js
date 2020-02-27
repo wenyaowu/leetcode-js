@@ -1,21 +1,4 @@
 /**
- * Given a nested list of integers, return the sum of all integers in the list weighted by their depth.
-
-Each element is either an integer, or a list -- whose elements may also be integers or other lists.
-
-Example 1:
-
-Input: [[1,1],2,[1,1]]
-Output: 10 
-Explanation: Four 1's at depth 2, one 2 at depth 1.
-Example 2:
-
-Input: [1,[4,[6]]]
-Output: 27 
-Explanation: One 1 at depth 1, one 4 at depth 2, and one 6 at depth 3; 1 + 4*2 + 6*3 = 27.
- */
-
-/**
  * // This is the interface that allows for creating nested lists.
  * // You should not implement it, or speculate about its implementation
  * function NestedInteger() {
@@ -57,19 +40,57 @@ Explanation: One 1 at depth 1, one 4 at depth 2, and one 6 at depth 3; 1 + 4*2 +
  * @param {NestedInteger[]} nestedList
  * @return {number}
  */
-var depthSum = function(nestedList) {
-  let sum = 0;
-  dfs(nestedList, 1);
-  return sum;
-
-  function dfs(nestedList, multiplier) {
-    for (let i = 0; i < nestedList.length; i++) {
-      let item = nestedList[i];
-      if (item.isInteger()) {
-        sum += item.getInteger() * multiplier;
-      } else {
-        dfs(item.getList(), multiplier + 1);
+var depthSumInverse = function(nestedList) {
+  let totalDepth = 0;
+  let queue = [...nestedList];
+  let res = 0;
+  // Find the total depth
+  while (queue.length > 0) {
+    totalDepth += 1;
+    let size = queue.length;
+    for (let i = 0; i < size; i++) {
+      let current = queue.shift();
+      let list = current.getList();
+      if (list) {
+        queue = [...queue, ...list];
       }
     }
+  }
+
+  dfs(nestedList, 0);
+  return res;
+
+  function dfs(nestedList, currentDepth) {
+    for (let i = 0; i < nestedList.length; i++) {
+      if (nestedList[i].isInteger()) {
+        res += nestedList[i].getInteger() * (totalDepth - currentDepth);
+      } else {
+        dfs(nestedList[i].getList(), currentDepth + 1);
+      }
+    }
+  }
+};
+
+
+/**
+ * 
+ Advance way. The lower level will be pass in and add multiple times
+ */
+var depthSumInverse = function(nestedList) {
+  return dfs(nestedList, 0);
+  
+  function dfs(list, preSum) {
+    let currentSum = preSum;
+    let nextLevel = [];
+    for (let l of list) {
+      if (l.isInteger()) {
+        currentSum += l.getInteger();
+      } else {
+        nextLevel = [...nextLevel, ...l.getList()];
+      }
+    }
+
+    let listSum = nextLevel.length > 0 ? dfs(nextLevel, currentSum) : 0;
+    return currentSum + listSum;
   }
 };

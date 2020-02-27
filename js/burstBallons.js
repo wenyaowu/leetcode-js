@@ -20,5 +20,31 @@ Explanation: nums = [3,1,5,8] --> [3,5,8] -->   [3,8]   -->  [8]  --> []
  * @return {number}
  */
 var maxCoins = function(nums) {
+    /**
+     * First of all, dp[i][j] in here means, the maximum coins we get after we burst all the balloons 
+between i and j in the original array, therefore if left+1 === right, no balloons are in the middle, no balloon to pop, return 0
+     */
+    const numsWithBoundary = [1, ...nums, 1];
+    const m = numsWithBoundary.length;
+    const dp = new Array(m).fill(0).map(()=>new Array(m).fill(-1));
+    burst(0, m-1);
     
+    function burst(left, right) {
+        if(left+1 === right) {
+            return 0;
+        }
+        if(dp[left][right] !== -1) {
+            return dp[left][right];
+        }
+        let res = 0;
+        for(let i = left+1; i<right; i++) {
+            // Burst balloon i when boundary is left and right
+            // After we burst i balloon, we separate nums into two sections
+            res = Math.max(res, numsWithBoundary[left] * numsWithBoundary[i] * numsWithBoundary[right] + burst(left, i) + burst(i, right))
+        }
+        dp[left][right] = res;
+        return res;
+     }
 };
+
+
