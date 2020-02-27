@@ -47,27 +47,27 @@ var kClosest = function(points, K) {
   return points.slice(0, K);
 };
 
-function sort(points, l, r) {
-  const pivot = points[l];
-  const pivotDistance = distance(pivot);
-  let i = l;
-  while (i <= r) {
-    if (distance(points[i]) < pivotDistance) {
-      swap(points, i, l);
-      l += 1;
-      i += 1;
-    } else if (distance(points[i]) > pivotDistance) {
-      swap(points, i, r);
-      r -= 1;
-    } else {
-      i++;
-    }
-  }
+// function sort(points, l, r) {
+//   const pivot = points[l];
+//   const pivotDistance = distance(pivot);
+//   let i = l;
+//   while (i <= r) {
+//     if (distance(points[i]) < pivotDistance) {
+//       swap(points, i, l);
+//       l += 1;
+//       i += 1;
+//     } else if (distance(points[i]) > pivotDistance) {
+//       swap(points, i, r);
+//       r -= 1;
+//     } else {
+//       i++;
+//     }
+//   }
   //      smaller   eql   bigger (l and r should fall on equal)
   // |------------|-----|-------------|
   //              l     r
-  return r; // 0 -> r is sorted (r+1 elements are the left side are k-smallest)
-}
+//   return r; // 0 -> r is sorted (r+1 elements are the left side are k-smallest)
+// }
 
 function swap(array, i, j) {
   const temp = array[i];
@@ -78,3 +78,27 @@ function swap(array, i, j) {
 function distance(point) {
   return Math.sqrt(point[0] * point[0] + point[1] * point[1]);
 }
+
+
+
+function quicksort(nums, l, r) {
+  let pivot = distance(nums[l]);
+
+  swap(nums, l, r);
+  let i = l; 
+  let j = l;
+  while(j<=r-1) {
+    if(distance(nums[j]) <= pivot) {
+      swap(nums,i, j);
+      i+=1;
+      j+=1;
+    } else {
+      j+=1
+    }
+  }
+  swap(nums, i, r);
+  console.log(nums)
+  return i;
+}
+const nums = [8,3,6,11,4,10]
+console.log(quicksort(nums, 2, nums.length-1))
