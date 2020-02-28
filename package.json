@@ -1,0 +1,22 @@
+{
+  "name": "leetcodes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wenyaowu/leetcode-js.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wenyaowu/leetcode-js/issues"
+  },
+  "homepage": "https://github.com/wenyaowu/leetcode-js#readme",
+  "dependencies": {
+    "collections": "^5.1.9"
+  }
+}
