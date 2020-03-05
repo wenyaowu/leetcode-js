@@ -25,7 +25,6 @@ Day 2: [0, 0, 0, 0, 1, 1, 1, 0]
 Day 3: [0, 1, 1, 0, 0, 1, 0, 0]
 Day 4: [0, 0, 0, 0, 0, 1, 0, 0]
 Day 5: [0, 1, 1, 1, 0, 1, 0, 0]
-
 Day 6: [0, 0, 1, 0, 1, 1, 0, 0]
 Day 7: [0, 0, 1, 1, 0, 0, 0, 0]
 Day 8: [0, 0, 0, 0, 0, 1, 1, 1]
@@ -48,11 +47,57 @@ cells.length == 8
 cells[i] is in {0, 1}
 1 <= N <= 10^9 */
 
+
+/**
+ * 
+    Calculating how many steps we need to require to reach from initial state. 
+    Example: There is a cycle of number from 1 to n. So cycle may start from 0 but to reach from 1 to again 1 OR 2 to again 2 we need same steps. 
+ */
+
+
+
 /**
  * @param {number[]} cells
  * @param {number} N
  * @return {number[]}
  */
 var prisonAfterNDays = function(cells, N) {
-    
+  // Try to use code to find pattern
+  const lookup = {}; // Quick lookup to find the pattern
+  let hasCycle = false;
+  let currentCells = cells;
+  let cycle = 0; //<----- This is actually NOT the cycle size. It's how many steps required to reach X state from 0
+  for (let i = 0; i < N; i++) {
+    let next = nextCells(currentCells);
+    let key = cellsToString(next);
+    if (lookup[key]) {
+      hasCycle = true;
+      break;
+    } else {
+      cycle += 1;
+      lookup[key] = true;
+    }
+    currentCells = next;
+  }
+  if (hasCycle) {
+    N = N % cycle;
+    for (let i = 0; i < N; i++) {
+      currentCells = nextCells(currentCells);
+    }
+  }
+  return currentCells;
 };
+
+function nextCells(cells) {
+  const newCells = new Array(cells.length).fill(0);
+  for (let i = 1; i < cells.length - 1; i++) {
+    newCells[i] = cells[i - 1] === cells[i + 1] ? 1 : 0;
+  }
+  return newCells;
+}
+
+function cellsToString(cells) {
+  return cells.join("");
+}
+
+console.log(prisonAfterNDays([1, 1, 0, 0, 0, 0, 1, 1], 7));
