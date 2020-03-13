@@ -78,7 +78,7 @@ var numRollsToTarget = function(d, f, target) {
   for (let i = 1; i < dp.length; i++) {
     for (let j = 1; j < dp[0].length; j++) {
       if (j > f * i) {
-        // too big we cant possible get the amount
+        // too big we cant possible get the amount, 0 way
         continue;
       }
       for (let face = 1; face < f + 1; face++) {
