@@ -47,6 +47,14 @@ var change = function(amount, coins) {
     for(let i = 1; i<dp[0].length; i++) {
         for(let j = 1; j<dp.length; j++) {
             let coinIdx = j-1;
+            
+            /**
+             * using the ith coin, since we can use unlimited same coin, 
+             * we need to know how many ways to make up amount j - coins[i-1] 
+             * by using first i coins(including ith), which is dp[i][j-coins[i-1]]
+             * 
+             * j-coins[i-1] ensure that we need to use at least one ith coin
+             */
             dp[i][j] = dp[i-1][j] + (j-coins[coinIdx] >= 0 ? dp[i][j-coins[coinIdx]] : 0); 
         }
     }

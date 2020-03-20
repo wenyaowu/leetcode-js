@@ -13,6 +13,7 @@ For example, given n = 3, a solution set is:
 """
 
 
+
 class Solution:
     def generateParenthesis(self, n: int) -> List[str]:
         res = []

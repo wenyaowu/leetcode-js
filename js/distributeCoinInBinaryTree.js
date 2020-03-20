@@ -62,3 +62,6 @@ var distributeCoins = function(root) {
          // -1 cause need to keep 1 for self
     }
 };
+
+// For each node: How many coin I can give to parents = (coins that left and right child can give me + coin for node - 1)
+// This number can be positive or negative (give or take)
