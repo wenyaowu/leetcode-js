@@ -97,39 +97,44 @@ console.log(
   )
 );
 
-
-
 /**
- * 
+ *
  * This version can only find one best solution
  */
 function twoSumClosestSimplified(a, b, target) {
-    a = a.sort((x, y) => x[1] - y[1]);
-    b = b.sort((x, y) => x[1] - y[1]);
-    let maxPossibleSum = Number.MIN_VALUE;
-    let res = [];
-    const m = a.length;
-    const n = b.length;
-    let i = 0;
-    let j = n - 1;
-    while (i < m && j > 0) {
-      let sum = a[i][1] + b[j][1];
-      if (sum > target) { // out of bound
-        j -= 1;
-      } else {
-        if(sum >= maxPossibleSum) {
-            if(sum > maxPossibleSum) {
-                maxPossibleSum = sum; // Update the current maximum
-                res = [[a[i][0], b[i][0]]];
-            }
-            /**
-             * To find all solution we need 
-             * (1) add to res if the sum === maxPossibleSum
-             * (2) to add a logic here to go through all the possible results by decreasing b
-             */
+  a = a.sort((x, y) => x[1] - y[1]);
+  b = b.sort((x, y) => x[1] - y[1]);
+  let maxPossibleSum = Number.MIN_VALUE;
+  let res = [];
+  const m = a.length;
+  const n = b.length;
+  let i = 0;
+  let j = n - 1;
+  while (i < m && j >= 0) {
+    let sum = a[i][1] + b[j][1];
+    if (sum > target) {
+      // out of bound
+      j -= 1;
+    } else {
+      if (sum >= maxPossibleSum) {
+        if (sum > maxPossibleSum) {
+          maxPossibleSum = sum; // Update the current maximum
+          res = [];
         }
-        i += 1;
+        res.push([a[i][0], b[j][0]]);
+        /**
+         * To find all solution we need
+         * (1) add to res if the sum === maxPossibleSum
+         * (2) to add a logic here to go through all the possible results by decreasing b
+         */
+        let index = j - 1;
+        while (index >= 0 && b[index][1] === b[index + 1][1]) {
+          res.push([a[i][0], b[index][0]]);
+          index -= 1;
+        }
       }
+      i += 1;
     }
-    return res;
   }
+  return res;
+}

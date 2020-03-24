@@ -29,35 +29,27 @@ class Solution(object):
         :type n: int
         :rtype: int
         """
-        last = [-1 for i in range(26)]
         # Construnct heap
         heap = [(-freq, char)
                 for char, freq in collections.Counter(tasks).items()]
         heapq.heapify(heap)
-        count = 0
+        time = 0
         
-        while(len(heap) > 0):
-            temp = [] # To keep ones that is not qualify for this round
-            idle = True
-            # Pull the next available task 
-            while(len(heap) > 0):
+        while len(heap):
+            temp = []
+            k = n + 1
+            while len(heap) and k > 0:
                 top = heapq.heappop(heap)
-                if(last[charToNum(top[1])] == -1 or last[charToNum(top[1])] < count-n): # Qualify
-                     count += 1
-                     last[charToNum(top[1])] = count
-                     idle = False
-                     if(top[0] != -1):
-                         heapq.heappush(heap, (top[0]+1, top[1])) # push back
-                     break
-                else: # Not Qualify
-                    temp.append(top)
-            if idle:
-                count += 1
+                if(top[0] != -1):
+                    temp.append((top[0]+1, top[1]))
+                 # Wait time for the most frequent, this can calculate the least space require to have the same task again for the whole sequence
+                k -= 1 
+                time += 1
             for t in temp:
                 heapq.heappush(heap, t)
-        return count
-
-def charToNum(char):
-    return ord(char) - ord("A")
-
+            # No more item in the heap, break and return right away
+            if not len(heap):
+                break
+            time += k
+        return time
 
