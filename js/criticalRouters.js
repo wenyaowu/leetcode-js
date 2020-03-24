@@ -53,7 +53,7 @@ function criticalRouters(numNodes, numEdges, edges) {
       }
       unionFind.union(e[0], e[1]);
     }
-    if (unionFind.components === 3) {
+    if (unionFind.components > 2) {
       criticalRouters.push(i);
     }
   }
