@@ -29,48 +29,44 @@ return its length 5.
  * @param {string[]} wordList
  * @return {number}
  */
+/**
+ * @param {string} beginWord
+ * @param {string} endWord
+ * @param {string[]} wordList
+ * @return {number}
+ */
 var ladderLength = function(beginWord, endWord, wordList) {
-  let level = 1;
-  if (wordList.indexOf(endWord) < -1) {
-    return 0;
+  const dict = {};
+  for(let w of wordList) {
+      dict[w] = true;
   }
-  let queue = [beginWord];
-  let nextQueue = [];
-  let nextWordList = [];
-
-  while (queue.length > 0) {
-    level += 1;
-    for (let currentWord of queue) {
-      for (let word of wordList) {
-        if (transformValid(currentWord, word)) {
-          if (word === endWord) {
-            return level;
+  if(!dict[endWord]) {
+      return 0;
+  }
+  const queue = [beginWord]
+  const visited = {};
+  let level = 1; // The first one is included
+  const chars = 'abcdefghijklmnopqrstuvwxyz';
+  
+  while(queue.length) {
+      let size = queue.length;
+      for(let i = 0; i < size; i++) {
+          let current = queue.shift();
+          if(current === endWord) {
+              return level;
           }
-          // Add word to next queue
-          nextQueue.push(word);
-          // Remove word
-        } else {
-          nextWordList.push(word);
-        }
+          for(let i = 0; i < current.length; i++) {
+              for(let c of chars) {
+                  let s = current.substring(0, i) + c + current.substring(i+1);
+                  if(dict[s] && !visited[s]) {
+                      queue.push(s);
+                      visited[s] = true;
+                  }
+              }
+          }
       }
-      wordList = nextWordList;
-      nextWordList = [];
-    }
-    queue = nextQueue; // Replace
-    nextQueue = [];
+      level += 1;
   }
   return 0;
 };
 
-var transformValid = function(w1, w2) {
-  const n = w1.length;
-  for (let i = 0; i < w1.length; i++) {
-    if (
-      w1.substring(0, i) === w2.substring(0, i) &&
-      w1.substring(i + 1, n) === w2.substring(i + 1, n)
-    ) {
-      return true;
-    }
-  }
-  return false;
-};

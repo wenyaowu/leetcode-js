@@ -58,6 +58,12 @@ var mincostTickets = function(days, costs) {
       //non travel date
       dp[i] = dp[i - 1]; //<----Key
     } else {
+
+      /**
+       * when i - k < 0, meaning that the starting date is less than day 0
+       * For example, buy a 7 days ticket at 5th day.
+       * We will just take dp[0] or 0 as the previous cost to calculate
+       */
       dp[i] = Math.min(
         dp[Math.max(i - 1, 0)] + costs[0],
         dp[Math.max(i - 7, 0)] + costs[1],
