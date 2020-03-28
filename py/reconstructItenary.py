@@ -37,7 +37,7 @@ class Solution(object):
 
     def dfs(self, node):
         neighbors = [] if node not in self.graph else self.graph[node]
-        while neighbors and len(neighbors) > 0:
+        while neighbors and len(neighbors) > 0: # Pop edges one by one until there's no edges
             n = heapq.heappop(neighbors)
             self.dfs(n)
         self.res = [node] + self.res

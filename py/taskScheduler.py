@@ -39,6 +39,8 @@ class Solution(object):
             temp = []
             k = n + 1
             while len(heap) and k > 0:
+                # Pay attention to k > 0
+                # When k > 0, we are able to put the first character again and we should allow it to be push since it still might be the most frequent char in the list
                 top = heapq.heappop(heap)
                 if(top[0] != -1):
                     temp.append((top[0]+1, top[1]))
@@ -47,7 +49,7 @@ class Solution(object):
                 time += 1
             for t in temp:
                 heapq.heappush(heap, t)
-            # No more item in the heap, break and return right away
+            # No more item in the heap, break and return right away. Do this before time+=k so we don't add the very last time
             if not len(heap):
                 break
             time += k

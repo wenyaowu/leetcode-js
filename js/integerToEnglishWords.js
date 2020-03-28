@@ -22,6 +22,15 @@ Output: "One Billion Two Hundred Thirty Four Million Five Hundred Sixty Seven Th
  * @return {string}
  */
 var numberToWords = function(num) {
+
+    /*
+    Process group: 
+    1000
+    1~20
+    21~99
+    100~999
+  */
+ 
   const lessThan20 = [
     "",
     "One",
