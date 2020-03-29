@@ -1,38 +1,45 @@
-/**Given an integer array nums, find the sum of the elements between indices i and j (i ≤ j), inclusive.
-
-Example:
-Given nums = [-2, 0, 3, -5, 2, -1]
-[-2, -2, 1, -4, -2, -3]
-sumRange(0, 2) -> 1
-sumRange(2, 5) -> -1 = 0:5 - 0:1 = -3 - -2 = -1
-sumRange(2, 4) -> 0:4 - 0:1 = -2 - -2 = 0
-sumRange(0, 5) -> -3
-Note:
-You may assume that the array does not change.
-There are many calls to sumRange function. */
 /**
- * @param {number[]} nums
+ * @param {number[][]} matrix
  */
-var NumArray = function(nums) {
-    let sum = 0;
-    this.accumSum = nums.reduce((accum, current)=>{
-       sum+=current;
-       accum.push(sum);
-       return accum;
-    }, []);
+var NumMatrix = function(matrix) {
+    if(!matrix || !matrix[0]) {
+        return;
+    }
+    const m = matrix.length;
+    const n = matrix[0].length;
+    
+    const dp = new Array(m).fill(0).map(()=>new Array(n).fill(0));
+    
+    dp[0][0] = matrix[0][0];
+    for(let i = 1; i < m; i++) {
+        dp[i][0] = dp[i-1][0] + matrix[i][0];
+    }
+    for(let j = 1; j < n; j++) {
+        dp[0][j] = dp[0][j-1] + matrix[0][j];
+    }
+    
+    for(let i = 1; i < m; i++) {
+        for(let j = 1; j < n; j++) {
+            dp[i][j] = matrix[i][j] + dp[i-1][j] + dp[i][j-1] -dp[i-1][j-1];
+        }
+    }
+    this.dp = dp;
 };
 
 /** 
- * @param {number} i 
- * @param {number} j
+ * @param {number} row1 
+ * @param {number} col1 
+ * @param {number} row2 
+ * @param {number} col2
  * @return {number}
  */
-NumArray.prototype.sumRange = function(i, j) {
-    return this.accumSum[j] - (i-1 < 0 ? 0 : this.accumSum[i-1]);
+NumMatrix.prototype.sumRegion = function(row1, col1, row2, col2) {
+    
+    return this.dp[row2][col2] - (row1 === 0 ? 0 : this.dp[row1-1][col2]) - (col1 === 0 ? 0 : this.dp[row2][col1-1]) + (row1 === 0 || col1 === 0 ? 0 : this.dp[row1-1][col1-1]);
 };
 
 /** 
- * Your NumArray object will be instantiated and called as such:
- * var obj = new NumArray(nums)
- * var param_1 = obj.sumRange(i,j)
+ * Your NumMatrix object will be instantiated and called as such:
+ * var obj = new NumMatrix(matrix)
+ * var param_1 = obj.sumRegion(row1,col1,row2,col2)
  */

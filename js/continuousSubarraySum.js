@@ -26,7 +26,7 @@ You may assume the sum of all the numbers is in the range of a signed 32-bit int
  */
 var checkSubarraySum = function(nums, k) {
   const m = nums.length;
-  const dp = { 0: -1 };
+  const dp = { 0: -1 }; // For the case when the whole running sum is n*k
 
   let sum = 0;
   for (let i = 0; i < m; i++) {
