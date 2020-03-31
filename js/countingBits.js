@@ -17,27 +17,18 @@ It is very easy to come up with a solution with run time O(n*sizeof(integer)).
 But can you do it in linear time O(n) /possibly in a single pass?
 Space complexity should be O(n).
 Can you do it like a boss? Do it without using any builtin function like __builtin_popcount in c++ or in any other language.*/
-
 /**
  * @param {number} num
  * @return {number[]}
  */
 var countBits = function(num) {
-  if (num === 0) {
-    return [0];
+  const res = new Array(num+1).fill(0);
+  res[0] = 0;
+  for(let i = 1; i < num+1; i++) {
+      res[i] = res[Math.floor(i/2)];
+      if(i % 2 === 1) {
+          res[i] += 1;
+      }
   }
-  const dp = new Array(num + 1).fill(0);
-  dp[1] = 1;
-
-  let currentBase = 2;
-  for (let i = 2; i < num + 1; i++) {
-    if (isPowerOfTwo(i)) {
-      currentBase = i;
-    }
-    dp[i] = 1 + dp[i % currentBase];
-  }
-  return dp;
+  return res;
 };
-function isPowerOfTwo(num) {
-    return (num & (num-1)) == 0;
-}
