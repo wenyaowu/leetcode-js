@@ -49,36 +49,49 @@ Could you devise a constant space solution? */
  * }
  */
 /**
+ * In inorder traversal, the result should be sorted from the smallest to largest.
+ * If two elements are swapped, the first error should be the larger one the second one should be the smaller one
+ * For example [1,2,3,4,5,6] -> [1,6,3,4,5,2]
+ * We first detect 6->3 is out of order, we pick 6 here
+ * second detect 5->2, we pick 2
+ */
+
+
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
  * @param {TreeNode} root
  * @return {void} Do not return anything, modify root in-place instead.
  */
 var recoverTree = function(root) {
   let first = null;
   let second = null;
-  let prevNode = new TreeNode(Number.MIN_SAFE_INTEGER);
+  let prevNode;
   inorder(root);
   swap(first, second);
-
+  
   function inorder(node) {
-    if (!node) {
-      return;
-    }
-    inorder(node.left);
-    // Do something
-    if (!first && prevNode.val >= node.val) {
-      first = prevNode;
-    }
-    if (first && prevNode.val >= node.val) {
-      console.log(node.val);
-      second = node;
-    }
-    prevNode = node;
-    inorder(node.right);
+      if(!node) {
+          return;
+      }
+      inorder(node.left);
+      if(!first && prevNode && prevNode.val >= node.val) {
+          first = prevNode;
+      }
+      if (first && prevNode && prevNode.val >= node.val) { // Not else if casue if the nodes swapped are next to each other the error will occur only once
+          second = node;
+      }
+      prevNode = node;
+      inorder(node.right);
   }
-
   function swap(node1, node2) {
-    let temp = node1.val;
-    node1.val = node2.val;
-    node2.val = temp;
+      let temp = node1.val;
+      node1.val = node2.val;
+      node2.val = temp;
   }
 };
