@@ -61,3 +61,28 @@ var find132pattern = function(nums) {
   }
   return false;
 };
+
+// Solution 2, start from the back
+// a3 saves the second largest number to the right that's smaller than the  
+// When a2 has value, meaning that theres a number larger than it on the left side (a3)
+// this is how to find a2 a3
+
+// now, if num[i] is smaller than a2, we find a1 cause a1 < a2 < a3 
+/**
+ * @param {number[]} nums
+ * @return {boolean}
+ */
+var find132pattern = function(nums) {
+  const stack = [];
+  let a2 = null;
+  for(let i = nums.length; i >= 0; i--) {
+      if(a2 && nums[i] < a2) {
+          return true;
+      }
+      while(stack.length && stack[stack.length-1] < nums[i]) {
+          a2 = stack.pop();
+      }
+      stack.push(nums[i])
+  }
+  return false;
+};
