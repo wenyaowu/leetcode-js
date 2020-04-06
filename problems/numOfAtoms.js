@@ -49,6 +49,8 @@ var countOfAtoms = function(formula) {
   while (i >= 0) {
     let low = ""; // For processing current element
     let count = 1; // Always start with 1 for each element
+    
+    /** Process of current element */
     if (isDigit(formula[i])) {
       // parse the number out to use it later
       let end = i;
@@ -57,6 +59,16 @@ var countOfAtoms = function(formula) {
       }
       count = +formula.substring(i + 1, end + 1);  
     } 
+    if (isUpper(formula[i])) {
+      let currentElement = formula[i] + low;
+      add(table, currentElement, weight * count);
+    }
+    i -= 1;
+
+
+    /**
+     * Process of new element
+     */
     if (formula[i] === ")") {
       // We know from now on whatever element we have ,the weight will be weight+count until we meet "("
       weight *= count;
@@ -73,11 +85,9 @@ var countOfAtoms = function(formula) {
       }
       low = formula.substring(i + 1, end + 1);
     }
-    if (isUpper(formula[i])) {
-      let currentElement = formula[i] + low;
-      add(table, currentElement, weight * count);
-    }
-    i -= 1;
+
+
+
   }
 
   let res = "";
